@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../server/db");
-const { User, Classroom } = require("../server/db/models");
+const { User, Classroom, Test } = require("../server/db/models");
 
 async function seed() {
 	await db.sync({ force: true });
@@ -29,13 +29,17 @@ async function seed() {
 	const classroom1 = await Classroom.create({ name: "classroom1" });
 	const classroom2 = await Classroom.create({ name: "classroom2" });
 
+	const test = await Test.create({ title: "New test" });
+
 	// await users[0].addClassroom(classroom1);
 	// await users[1].addClassroom(classroom1);
 	// await users[0].addClassroom(classroom2);
 
 	await classroom1.addUsers(users);
 
-	let allStudents = await users[0].getStudents();
+	await users[2].addTest(test);
+
+	await test.addClassroom(classroom1);
 
 	console.log(`seeded ${users.length} users`);
 	console.log(`seeded successfully`);
